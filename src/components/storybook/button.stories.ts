@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { fn } from 'storybook/test'
-import { Button } from './button'
+import { Button } from '../ui/button'
 
 const meta = {
   title: 'Components/Button',
@@ -15,10 +15,10 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {
+export const Default: Story = {
   args: {
-    variant: 'primary',
-    children: 'Primary Button',
+    variant: 'default',
+    children: 'Default Button',
   },
 }
 
@@ -29,37 +29,58 @@ export const Secondary: Story = {
   },
 }
 
-export const Danger: Story = {
+export const Destructive: Story = {
   args: {
-    variant: 'danger',
+    variant: 'destructive',
     children: 'Delete Account',
+  },
+}
+
+export const Outline: Story = {
+  args: {
+    variant: 'outline',
+    children: 'Outline Button',
+  },
+}
+
+export const Ghost: Story = {
+  args: {
+    variant: 'ghost',
+    children: 'Ghost Button',
+  },
+}
+
+export const Link: Story = {
+  args: {
+    variant: 'link',
+    children: 'Link Button',
   },
 }
 
 export const Small: Story = {
   args: {
-    size: 'small',
+    size: 'sm',
     children: 'Small Button',
-  },
-}
-
-export const Medium: Story = {
-  args: {
-    size: 'medium',
-    children: 'Medium Button',
   },
 }
 
 export const Large: Story = {
   args: {
-    size: 'large',
+    size: 'lg',
     children: 'Large Button',
+  },
+}
+
+export const IconButton: Story = {
+  args: {
+    size: 'icon',
+    children: '⚙️',
   },
 }
 
 export const Disabled: Story = {
   args: {
-    variant: 'primary',
+    variant: 'default',
     children: 'Disabled Button',
     disabled: true,
   },
