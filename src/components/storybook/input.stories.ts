@@ -4,7 +4,7 @@ import { fn } from 'storybook/test'
 import { Input } from './input'
 
 const meta = {
-  title: 'Form/Input',
+  title: 'Components/Input',
   component: Input,
   parameters: {
     layout: 'centered',

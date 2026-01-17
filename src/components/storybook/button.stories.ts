@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { fn } from 'storybook/test'
-
 import { Button } from './button'
 
 const meta = {
-  title: 'Form/Button',
+  title: 'Components/Button',
   component: Button,
   parameters: {
     layout: 'centered',

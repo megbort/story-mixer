@@ -4,7 +4,7 @@ import { Dialog } from './dialog'
 import { Button } from './button'
 
 const meta = {
-  title: 'Form/Dialog',
+  title: 'Components/Dialog',
   component: Dialog,
   parameters: {
     layout: 'centered',
