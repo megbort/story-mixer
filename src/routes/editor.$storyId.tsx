@@ -1,0 +1,148 @@
+import { STORIES } from '@/data/stories'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useState } from 'react'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { HelpCircle, ArrowLeft } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+
+const SUGGESTIONS: Record<string, string[]> = {
+  noun: ['dog', 'elephant', 'banana', 'telescope', 'pizza'],
+  verb: ['jumped', 'danced', 'exploded', 'whispered', 'flew'],
+  adjective: ['sparkly', 'grumpy', 'invisible', 'gigantic', 'fuzzy'],
+  adverb: [
+    'quickly',
+    'mysteriously',
+    'enthusiastically',
+    'gracefully',
+    'frantically',
+  ],
+}
+
+const DESCRIPTIONS: Record<string, string> = {
+  noun: 'A person, place, or thing',
+  verb: 'An action or state of being',
+  adjective: 'A word that describes something',
+  adverb: 'A word that describes how something is done',
+}
+
+export const Route = createFileRoute('/editor/$storyId')({
+  component: EditorComponent,
+})
+
+function EditorComponent() {
+  const { storyId } = Route.useParams()
+  const navigate = useNavigate()
+  const story = STORIES.find((story) => story.id === storyId)
+
+  const [formValues, setFormValues] = useState<Record<string, string>>(
+    Object.fromEntries(story?.inputs.map((input) => [input.id, '']) ?? []),
+  )
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
+  if (!story) {
+    return <div>Story not found</div>
+  }
+
+  const handleInputChange = (inputId: string, value: string) => {
+    setFormValues((prev) => ({ ...prev, [inputId]: value }))
+
+    if (errors[inputId]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors[inputId]
+        return newErrors
+      })
+    }
+  }
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {}
+    story.inputs.forEach((input) => {
+      if (!formValues[input.id]?.trim()) {
+        newErrors[input.id] = `${input.label} is required`
+      }
+    })
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault()
+    if (validateForm()) {
+      console.log('Form values:', formValues)
+      // TODO: Navigate to results page with form values
+    }
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-8">
+      <button
+        onClick={() => navigate({ to: '/' })}
+        className="flex items-center gap-2 mb-8 text-sm hover:opacity-70 cursor-pointer"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back
+      </button>
+      <h1 className="text-3xl font-bold mb-8">{story.title}</h1>
+
+      <TooltipProvider>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {story.inputs.map((input) => (
+            <div key={input.id} className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Label htmlFor={input.id}>{input.label}</Label>
+                {SUGGESTIONS[input.type] && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="w-4 h-4 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="space-y-1">
+                        <p className="font-semibold">
+                          {input.type.charAt(0).toUpperCase() +
+                            input.type.slice(1)}
+                        </p>
+                        <p className="text-xs">{DESCRIPTIONS[input.type]}</p>
+                        <p className="text-xs">
+                          Examples: {SUGGESTIONS[input.type].join(', ')}
+                        </p>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+              </div>
+              <Input
+                id={input.id}
+                type="text"
+                placeholder={`Enter a ${input.type}`}
+                value={formValues[input.id]}
+                onChange={(event) =>
+                  handleInputChange(input.id, event.target.value)
+                }
+                className={errors[input.id] ? 'border-storymixer-error' : ''}
+              />
+              {errors[input.id] && (
+                <p className="text-storymixer-error text-sm">
+                  {errors[input.id]}
+                </p>
+              )}
+            </div>
+          ))}
+
+          <button
+            type="submit"
+            className="w-full px-4 py-2 bg-storymixer-primary text-storymixer-white rounded font-bold hover:opacity-90"
+          >
+            Create Story
+          </button>
+        </form>
+      </TooltipProvider>
+    </div>
+  )
+}

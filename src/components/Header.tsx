@@ -1,14 +1,14 @@
 import { Link } from '@tanstack/react-router'
 
 import { useState } from 'react'
-import { BookOpen, ClipboardType, Home, Menu, X } from 'lucide-react'
+import { BookOpen, Home, Menu, X } from 'lucide-react'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
-      <header className="p-4 flex items-center bg-storymixer-primary-dark text-storymixer-white shadow-lg">
+      <header className="p-4 flex items-center bg-storymixer-primary text-storymixer-white shadow-lg">
         <button
           onClick={() => setIsOpen(true)}
           className="p-2 hover:bg-storymixer-primary rounded-lg transition-colors"
@@ -46,23 +46,11 @@ export default function Header() {
             className="flex items-center gap-3 p-3 rounded-lg hover:bg-storymixer-primary transition-colors mb-2"
             activeProps={{
               className:
-                'flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2',
+                'flex items-center gap-3 p-3 rounded-lg hover:bg-cyan-700 transition-colors mb-2',
             }}
           >
             <Home size={20} />
             <span className="font-medium">Home</span>
-          </Link>
-          <Link
-            to="/editor"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-storymixer-primary transition-colors mb-2"
-            activeProps={{
-              className:
-                'flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2',
-            }}
-          >
-            <ClipboardType size={20} />
-            <span className="font-medium">Story Editor</span>
           </Link>
           <Link
             to="/results"

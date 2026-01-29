@@ -17,7 +17,7 @@ export const CardButton: React.FC<CardButtonProps> = ({
   <button
     type="button"
     onClick={onClick}
-    className="group p-0 border-none bg-transparent cursor-pointer w-60"
+    className="group p-0 border-none bg-transparent cursor-pointer w-72"
     style={{ position: 'relative' }}
   >
     <Card className="overflow-hidden p-0 flex flex-col h-full relative">
@@ -25,7 +25,7 @@ export const CardButton: React.FC<CardButtonProps> = ({
         <img
           src={image}
           alt={title}
-          className="w-full h-36 object-cover rounded-t-xl"
+          className="w-full h-48 object-cover rounded-t-xl"
         />
       </div>
       <CardContent className="flex-1 flex flex-col justify-center items-center pt-0 pb-4 px-0">
