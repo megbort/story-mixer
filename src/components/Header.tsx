@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 
 import { useState } from 'react'
 import { BookOpen, Home, Menu, X } from 'lucide-react'
+import { Button } from './ui'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -9,16 +10,22 @@ export default function Header() {
   return (
     <>
       <header className="p-4 flex items-center bg-storymixer-primary text-storymixer-white shadow-lg">
-        <button
+        <Button
           onClick={() => setIsOpen(true)}
-          className="p-2 hover:bg-storymixer-primary rounded-lg transition-colors"
+          variant="ghost"
+          size="icon"
           aria-label="Open menu"
         >
-          <Menu size={24} />
-        </button>
+          <Menu className="size-6" />
+        </Button>
         <h1 className="ml-4 text-xl font-semibold">
-          <Link to="/">
-            <span>Story Mixer</span>
+          <Link to="/" className="flex items-center gap-2">
+            <img
+              src="https://res.cloudinary.com/dm1yyjg7i/image/upload/v1769899646/storymixer/story-mixer-logo-white_iztoix.png"
+              alt="Story Mixer"
+              className="h-8"
+            />
+            <span>StoryMixer</span>
           </Link>
         </h1>
       </header>
@@ -30,36 +37,25 @@ export default function Header() {
       >
         <div className="flex items-center justify-between p-4 border-b border-storymixer-primary">
           <h2 className="text-xl font-bold">Navigation</h2>
-          <button
+          <Button
             onClick={() => setIsOpen(false)}
-            className="p-2 hover:bg-storymixer-primary rounded-lg transition-colors"
+            variant="ghost"
+            size="icon"
             aria-label="Close menu"
           >
-            <X size={24} />
-          </button>
+            <X className="size-6" />
+          </Button>
         </div>
 
         <nav className="flex-1 p-4 overflow-y-auto">
-          <Link
-            to="/"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-storymixer-primary transition-colors mb-2"
-            activeProps={{
-              className:
-                'flex items-center gap-3 p-3 rounded-lg hover:bg-cyan-700 transition-colors mb-2',
-            }}
-          >
+          <Link to="/" onClick={() => setIsOpen(false)} className="nav-link">
             <Home size={20} />
             <span className="font-medium">Home</span>
           </Link>
           <Link
             to="/results"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-storymixer-primary transition-colors mb-2"
-            activeProps={{
-              className:
-                'flex items-center gap-3 p-3 rounded-lg bg-storymixer-primary hover:bg-storymixer-primary-dark transition-colors mb-2',
-            }}
+            className="nav-link"
           >
             <BookOpen size={20} />
             <span className="font-medium">Results</span>

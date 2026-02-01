@@ -1,6 +1,7 @@
 import { STORIES } from '@/data/stories'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { HelpCircle, ArrowLeft } from 'lucide-react'
@@ -76,19 +77,21 @@ function EditorComponent() {
     event.preventDefault()
     if (validateForm()) {
       console.log('Form values:', formValues)
-      // TODO: Navigate to results page with form values
+      navigate({ to: '/results', search: { storyId, formValues } })
     }
   }
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <button
+      <Button
         onClick={() => navigate({ to: '/' })}
-        className="flex items-center gap-2 mb-8 text-sm hover:opacity-70 cursor-pointer"
+        variant="ghost"
+        size="sm"
+        className="mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Back
-      </button>
+      </Button>
       <h1 className="text-3xl font-bold mb-8">{story.title}</h1>
 
       <TooltipProvider>
@@ -135,12 +138,9 @@ function EditorComponent() {
             </div>
           ))}
 
-          <button
-            type="submit"
-            className="w-full px-4 py-2 bg-storymixer-primary text-storymixer-white rounded font-bold hover:opacity-90"
-          >
+          <Button type="submit" className="w-full">
             Create Story
-          </button>
+          </Button>
         </form>
       </TooltipProvider>
     </div>

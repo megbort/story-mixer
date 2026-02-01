@@ -17,7 +17,7 @@ export const CardButton: React.FC<CardButtonProps> = ({
   <button
     type="button"
     onClick={onClick}
-    className="group p-0 border-none bg-transparent cursor-pointer w-72"
+    className="group p-0 cursor-pointer w-72"
     style={{ position: 'relative' }}
   >
     <Card className="overflow-hidden p-0 flex flex-col h-full relative">
