@@ -12,6 +12,7 @@ const colors = [
   { name: 'Primary', bg: 'bg-storymixer-primary' },
   { name: 'Primary Light', bg: 'bg-storymixer-primary-light' },
   { name: 'Accent', bg: 'bg-storymixer-accent' },
+  { name: 'Accent Dark', bg: 'bg-storymixer-accent-dark' },
   { name: 'Black', bg: 'bg-storymixer-black' },
   { name: 'White', bg: 'bg-storymixer-white border border-black' },
   { name: 'Grey', bg: 'bg-storymixer-grey' },

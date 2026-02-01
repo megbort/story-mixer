@@ -4,12 +4,13 @@
   --storymixer-primary: oklch(0.495 0.208 295.12);
   --storymixer-primary-light: oklch(0.744 0.131 295.12);
   --storymixer-accent: oklch(0.814 0.081 64.12);
+  --storymixer-accent-dark: oklch(73.475% 0.11624 62.607);
   --storymixer-black: oklch(0.176 0.005 286.32);
   --storymixer-white: oklch(0.984 0.003 286.32);
   --storymixer-grey: oklch(79.208% 0.00009 271.152);
   --storymixer-grey-alt: oklch(60.208% 0.00009 271.152);
-  --storymixer-error: oklch(48.975% 0.18915 26.343);
-  --storymixer-error-alt: oklch(48.975% 0.18915 26.343);
+  --storymixer-error: oklch(53.478% 0.17632 22.984);
+  --storymixer-error-alt: oklch(43.738% 0.16171 25.004);
 
   /* Shadcn Design Tokens */
   --background: var(--storymixer-white);
@@ -89,6 +90,7 @@
   --color-storymixer-primary: var(--storymixer-primary);
   --color-storymixer-primary-light: var(--storymixer-primary-light);
   --color-storymixer-accent: var(--storymixer-accent);
+  --color-storymixer-accent-dark: var(--storymixer-accent-dark);
   --color-storymixer-black: var(--storymixer-black);
   --color-storymixer-white: var(--storymixer-white);
   --color-storymixer-grey: var(--storymixer-grey);

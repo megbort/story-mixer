@@ -1,11 +1,30 @@
 import { Link } from '@tanstack/react-router'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { BookOpen, Home, Menu, X } from 'lucide-react'
 import { Button } from './ui'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const sidebarRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    }
+  }, [isOpen])
 
   return (
     <>
@@ -31,6 +50,7 @@ export default function Header() {
       </header>
 
       <aside
+        ref={sidebarRef}
         className={`fixed top-0 left-0 h-full w-80 bg-storymixer-primary-dark text-storymixer-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out flex flex-col ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
@@ -53,12 +73,12 @@ export default function Header() {
             <span className="font-medium">Home</span>
           </Link>
           <Link
-            to="/results"
+            to="/my-stories"
             onClick={() => setIsOpen(false)}
             className="nav-link"
           >
             <BookOpen size={20} />
-            <span className="font-medium">Results</span>
+            <span className="font-medium">My Stories</span>
           </Link>
         </nav>
       </aside>

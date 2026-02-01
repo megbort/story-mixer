@@ -77,17 +77,20 @@ function EditorComponent() {
     event.preventDefault()
     if (validateForm()) {
       console.log('Form values:', formValues)
-      navigate({ to: '/results', search: { storyId, formValues } })
+      navigate({
+        to: '/results',
+        search: { storyId, formValues, isNewStory: true },
+      })
     }
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-2xl mx-auto">
       <Button
         onClick={() => navigate({ to: '/' })}
         variant="ghost"
         size="sm"
-        className="mb-8"
+        className="mb-4"
       >
         <ArrowLeft className="w-4 h-4" />
         Back

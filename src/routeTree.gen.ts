@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResultsRouteImport } from './routes/results'
+import { Route as MyStoriesRouteImport } from './routes/my-stories'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EditorStoryIdRouteImport } from './routes/editor.$storyId'
 
 const ResultsRoute = ResultsRouteImport.update({
   id: '/results',
   path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyStoriesRoute = MyStoriesRouteImport.update({
+  id: '/my-stories',
+  path: '/my-stories',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,30 +37,34 @@ const EditorStoryIdRoute = EditorStoryIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/my-stories': typeof MyStoriesRoute
   '/results': typeof ResultsRoute
   '/editor/$storyId': typeof EditorStoryIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/my-stories': typeof MyStoriesRoute
   '/results': typeof ResultsRoute
   '/editor/$storyId': typeof EditorStoryIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/my-stories': typeof MyStoriesRoute
   '/results': typeof ResultsRoute
   '/editor/$storyId': typeof EditorStoryIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/results' | '/editor/$storyId'
+  fullPaths: '/' | '/my-stories' | '/results' | '/editor/$storyId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/results' | '/editor/$storyId'
-  id: '__root__' | '/' | '/results' | '/editor/$storyId'
+  to: '/' | '/my-stories' | '/results' | '/editor/$storyId'
+  id: '__root__' | '/' | '/my-stories' | '/results' | '/editor/$storyId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MyStoriesRoute: typeof MyStoriesRoute
   ResultsRoute: typeof ResultsRoute
   EditorStoryIdRoute: typeof EditorStoryIdRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/results'
       fullPath: '/results'
       preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-stories': {
+      id: '/my-stories'
+      path: '/my-stories'
+      fullPath: '/my-stories'
+      preLoaderRoute: typeof MyStoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MyStoriesRoute: MyStoriesRoute,
   ResultsRoute: ResultsRoute,
   EditorStoryIdRoute: EditorStoryIdRoute,
 }
