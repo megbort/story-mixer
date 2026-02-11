@@ -1,7 +1,6 @@
 export interface Story {
   id: string
   title: string
-  description: string
   image?: string
   inputs: StoryInput[]
   template: StoryTemplatePart[]
@@ -10,7 +9,7 @@ export interface Story {
 export interface StoryInput {
   id: string
   label: string
-  type: 'noun' | 'verb' | 'adjective' | 'adverb' | 'custom'
+  type: 'noun' | 'verb' | 'adjective' | 'adverb' | 'exclamation' | 'custom'
   placeholder?: string
 }
 

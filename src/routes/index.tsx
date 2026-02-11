@@ -8,7 +8,7 @@ export const Route = createFileRoute('/')({
     const navigate = useNavigate()
 
     return (
-      <div>
+      <div className="pt-8">
         <div className="mb-12">
           <h1 className="text-4xl font-bold mb-4">Welcome to StoryMixer!</h1>
           <p className="text-lg">
@@ -17,13 +17,12 @@ export const Route = createFileRoute('/')({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-fit">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {stories.map((story) => (
             <CardButton
               key={story.id}
               image={story.image ?? ''}
               title={story.title}
-              description={story.description}
               onClick={() =>
                 navigate({
                   to: '/editor/$storyId',

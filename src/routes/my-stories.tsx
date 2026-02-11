@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Info } from 'lucide-react'
+import { ArrowLeft, Info, Trash2 } from 'lucide-react'
 
 interface SavedStory {
   id: string
@@ -27,6 +27,25 @@ function RouteComponent() {
     }
   }, [])
 
+  const handleDeleteStory = (storyId: string) => {
+    setStories((prev) => prev.filter((story) => story.id !== storyId))
+    const saved = sessionStorage.getItem('storyMixer:createdStories')
+    if (saved) {
+      const updated = JSON.parse(saved).filter(
+        (story: SavedStory) => story.id !== storyId,
+      )
+      sessionStorage.setItem(
+        'storyMixer:createdStories',
+        JSON.stringify(updated),
+      )
+    }
+  }
+
+  const handleDeleteAll = () => {
+    setStories([])
+    sessionStorage.removeItem('storyMixer:createdStories')
+  }
+
   const handleViewStory = (story: SavedStory) => {
     navigate({
       to: '/results',
@@ -49,13 +68,6 @@ function RouteComponent() {
         <ArrowLeft className="w-4 h-4" />
         Back
       </Button>
-      <div className="flex items-start gap-2 mb-6">
-        <Info className="w-5 h-5 text-storymixer-accent-dark" />
-        <p className="text-storymixer-accent-dark text-sm">
-          Stories are saved to your session storage only. They will be cleared
-          when you close your browser.
-        </p>
-      </div>
 
       {stories.length === 0 ? (
         <div className="text-center py-12">
@@ -64,7 +76,13 @@ function RouteComponent() {
         </div>
       ) : (
         <div>
-          <h1 className="text-3xl font-bold mb-6">My Stories</h1>
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold">My Stories</h1>
+            <Button onClick={handleDeleteAll} variant="destructive" size="sm">
+              <Trash2 className="w-4 h-4" />
+              Delete All
+            </Button>
+          </div>
           <div className="space-y-3">
             {stories
               .slice()
@@ -85,12 +103,21 @@ function RouteComponent() {
                       {new Date(story.createdAt).toLocaleString()}
                     </p>
                   </div>
-                  <Button
-                    onClick={() => handleViewStory(story)}
-                    className="ml-4 shrink-0"
-                  >
-                    View Story
-                  </Button>
+                  <div className="ml-4 shrink-0 flex gap-2">
+                    <Button
+                      onClick={() => handleViewStory(story)}
+                      variant="default"
+                    >
+                      View Story
+                    </Button>
+                    <Button
+                      onClick={() => handleDeleteStory(story.id)}
+                      variant="ghost"
+                      size="sm"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
               ))}
           </div>

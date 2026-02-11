@@ -23,6 +23,7 @@ const SUGGESTIONS: Record<string, string[]> = {
     'gracefully',
     'frantically',
   ],
+  exclamation: ['Holy cow!', 'Yikes!', 'Wow!', 'Eureka!', 'Oh no!'],
 }
 
 const DESCRIPTIONS: Record<string, string> = {
@@ -30,6 +31,7 @@ const DESCRIPTIONS: Record<string, string> = {
   verb: 'An action or state of being',
   adjective: 'A word that describes something',
   adverb: 'A word that describes how something is done',
+  exclamation: 'An expression of strong emotion or surprise',
 }
 
 export const Route = createFileRoute('/editor/$storyId')({
@@ -126,7 +128,7 @@ function EditorComponent() {
               <Input
                 id={input.id}
                 type="text"
-                placeholder={`Enter a ${input.type}`}
+                placeholder={`ex: ${SUGGESTIONS[input.type]?.join(', ')}`}
                 value={formValues[input.id]}
                 onChange={(event) =>
                   handleInputChange(input.id, event.target.value)

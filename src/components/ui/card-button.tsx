@@ -4,23 +4,21 @@ import { Card, CardContent, CardTitle } from './card'
 interface CardButtonProps {
   image: string
   title: string
-  description: string
   onClick?: () => void
 }
 
 export const CardButton: React.FC<CardButtonProps> = ({
   image,
   title,
-  description,
   onClick,
 }) => (
   <button
     type="button"
     onClick={onClick}
-    className="group p-0 cursor-pointer w-72"
+    className="group p-0 cursor-pointer w-72 transition-transform duration-300 hover:scale-103"
     style={{ position: 'relative' }}
   >
-    <Card className="overflow-hidden p-0 flex flex-col h-full relative">
+    <Card className="overflow-hidden p-0 flex flex-col h-full relative transition-shadow duration-300 group-hover:shadow-lg">
       <div className="relative w-full">
         <img
           src={image}
@@ -33,9 +31,9 @@ export const CardButton: React.FC<CardButtonProps> = ({
           {title}
         </CardTitle>
       </CardContent>
-      <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60 opacity-0 transition-opacity duration-300 rounded-xl pointer-events-none group-hover:opacity-100">
-        <span className="text-white text-base px-4 text-center">
-          {description}
+      <div className="absolute inset-0 z-10 flex items-center justify-center bg-storymixer-primary-dark/60 opacity-0 transition-opacity duration-300 rounded-xl pointer-events-none group-hover:opacity-100">
+        <span className="text-storymixer-white text-lg font-semibold px-4 text-center">
+          Start story
         </span>
       </div>
     </Card>
