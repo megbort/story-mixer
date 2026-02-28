@@ -2,15 +2,15 @@
 
 StoryMixer is a simple fill-in-the-blanks story game built with React and TanStack.
 
-I built this project to entertain friends, kids, and family while also getting more hands-on experience with TanStack and modern React patterns.
+I built this project to entertain my friends, kids, and family while also getting more hands-on experience with TanStack and AI image models.
 
-## Features (Current / Planned)
+## Features
 
 - Story selection via cards
 - Dynamic form generation based on story data
 - Fill-in-the-blanks story creation
 - Static story data stored locally
-  - Later.. fetch stories from an API to add and manage new stories
+- AI story image generation
 
 ## Tech Stack
 
@@ -20,10 +20,7 @@ I built this project to entertain friends, kids, and family while also getting m
 - Vite
 - Storybook
 - Shadcn UI
-
-## Project Status
-
-Early development — features and structure may change.
+- OpenAI
 
 ## Getting Started
 
