@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { z } from 'zod'
-import { useEffect, useRef } from 'react'
-import { STORIES } from '../data/stories'
-import { Button } from '@/components/ui'
+import { useEffect, useRef, useState } from 'react'
+import { STORIES } from '@/data/stories'
+import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { ArrowLeft, BookOpen } from 'lucide-react'
 
 export const Route = createFileRoute('/results')({
@@ -18,22 +19,46 @@ function ResultsComponent() {
   const { storyId, formValues, isNewStory } = Route.useSearch()
   const story = STORIES.find((story) => story.id === storyId)
   const hasSaved = useRef(false)
+  const hasRequestedImage = useRef(false)
   const navigate = useNavigate()
+  const [imageDataUrl, setImageDataUrl] = useState<string | null>(null)
+  const [imageError, setImageError] = useState<string | null>(null)
+  const [isQuotaError, setIsQuotaError] = useState(false)
+  const [isImageLoading, setIsImageLoading] = useState(false)
+
+  const storyText = story
+    ? story.template
+        .map((part) =>
+          typeof part === 'string'
+            ? part
+            : (formValues?.[part.inputId] ?? `[${part.inputId}]`),
+        )
+        .join('')
+    : ''
 
   const saveNewStoryToSession = () => {
     if (!isNewStory || !story || hasSaved.current) return
+
+    const storySaveKey = getStorySaveKey(storyId, storyText)
+    if (sessionStorage.getItem(storySaveKey)) {
+      hasSaved.current = true
+      return
+    }
 
     const createdStories = JSON.parse(
       sessionStorage.getItem('storyMixer:createdStories') || '[]',
     )
 
-    const storyText = story.template
-      .map((part) =>
-        typeof part === 'string'
-          ? part
-          : (formValues?.[part.inputId] ?? `[${part.inputId}]`),
+    if (
+      createdStories.some(
+        (existing: { storyId: string; storyText: string }) =>
+          existing.storyId === storyId && existing.storyText === storyText,
       )
-      .join('')
+    ) {
+      sessionStorage.setItem(storySaveKey, 'deduped')
+      hasSaved.current = true
+      return
+    }
 
     const newStory = {
       id: crypto.randomUUID(),
@@ -49,6 +74,7 @@ function ResultsComponent() {
       'storyMixer:createdStories',
       JSON.stringify(createdStories),
     )
+    sessionStorage.setItem(storySaveKey, newStory.id)
     hasSaved.current = true
   }
 
@@ -56,17 +82,128 @@ function ResultsComponent() {
     saveNewStoryToSession()
   }, [isNewStory])
 
+  const imageStorageKey = story ? getImageStorageKey(storyId, storyText) : null
+
+  useEffect(() => {
+    if (!story || !imageStorageKey) return
+
+    const cachedImage = sessionStorage.getItem(imageStorageKey)
+    if (cachedImage) {
+      setImageDataUrl(cachedImage)
+      return
+    }
+
+    if (isNewStory && !hasRequestedImage.current) {
+      hasRequestedImage.current = true
+      setIsImageLoading(true)
+      setImageError(null)
+
+      const generateImage = async () => {
+        try {
+          const { default: OpenAI } = await import('openai')
+          const openai = new OpenAI({
+            apiKey: 'proxy',
+            baseURL: 'https://storymixer.megankrenbrink.com',
+            dangerouslyAllowBrowser: true,
+          })
+
+          const prompt = `Create a fun and whimsical illustration for this story: "${storyText}"`
+
+          const response = await openai.images.generate({
+            model: 'gpt-image-1-mini',
+            prompt,
+            size: '1024x1024',
+            quality: 'low',
+          })
+
+          const imageBase64 = response.data?.[0]?.b64_json
+          if (!imageBase64) {
+            throw new Error('No image generated from API')
+          }
+
+          const dataUrl = `data:image/png;base64,${imageBase64}`
+          sessionStorage.setItem(imageStorageKey, dataUrl)
+          setImageDataUrl(dataUrl)
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : 'Failed to generate image'
+          const isQuota = message.toLowerCase().includes('quota')
+          setIsQuotaError(isQuota)
+          setImageError(message)
+        } finally {
+          setIsImageLoading(false)
+        }
+      }
+
+      generateImage()
+    }
+  }, [imageStorageKey, isNewStory, story])
+
   if (!story) {
     return <div>Story not found</div>
   }
 
-  const storyText = story.template
-    .map((part) =>
-      typeof part === 'string'
-        ? part
-        : (formValues?.[part.inputId] ?? `[${part.inputId}]`),
+  const renderImageContent = () => {
+    if (imageDataUrl) {
+      return (
+        <img
+          src={imageDataUrl}
+          alt={`Illustration for ${story.title}`}
+          className="w-full rounded border border-storymixer-grey"
+        />
+      )
+    }
+
+    if (isImageLoading) {
+      return (
+        <div className="flex flex-col items-center justify-center text-center gap-3 min-h-55">
+          <Spinner />
+          <p className="text-sm text-storymixer-grey">
+            Generating a story image...
+          </p>
+        </div>
+      )
+    }
+
+    if (isQuotaError) {
+      return (
+        <div className="flex flex-col items-center justify-center text-center gap-3 min-h-55">
+          <img
+            src="https://res.cloudinary.com/dm1yyjg7i/image/upload/v1772319737/ghost-error_b0qhga.png"
+            alt="Rate limit error"
+            className="w-24 h-24 object-contain"
+          />
+          <p className="text-sm text-storymixer-grey">
+            You&apos;ve hit the rate limit. Try again in a few minutes.
+          </p>
+        </div>
+      )
+    }
+
+    if (imageError) {
+      return (
+        <div className="flex flex-col items-center justify-center text-center gap-3 min-h-55">
+          <img
+            src="https://res.cloudinary.com/dm1yyjg7i/image/upload/v1772320567/ghost-no-image_mqxffb.png"
+            alt="Illustration unavailable"
+            className="w-24 h-24 object-contain"
+          />
+          <p className="text-sm text-storymixer-grey">No Image Available</p>
+        </div>
+      )
+    }
+
+    return (
+      <div className="flex flex-col items-center justify-center text-center gap-3 min-h-55">
+        <img
+          src="https://res.cloudinary.com/dm1yyjg7i/image/upload/v1772320567/ghost-no-image_mqxffb.png"
+          alt="Illustration unavailable"
+          className="w-24 h-24 object-contain"
+        />
+        <p className="text-sm text-storymixer-grey">No Image Available</p>
+      </div>
     )
-    .join('')
+  }
 
   return (
     <div>
@@ -85,7 +222,13 @@ function ResultsComponent() {
         </Button>
       </div>
       <h2 className="text-lg font-semibold mb-4">{story.title}</h2>
-      <p className="mb-12 text-lg">{storyText}</p>
+
+      <div className="flex gap-4">
+        <p className="text-lg basis-2/3">{storyText}</p>
+        <div className="border border-storymixer-grey rounded p-4 basis-1/3 shrink-0">
+          {renderImageContent()}
+        </div>
+      </div>
 
       <div className="border-t border-gray-200 pt-8 mt-16">
         <p className="text-xs text-storymixer-grey mb-4 uppercase tracking-wide">
@@ -107,3 +250,9 @@ function ResultsComponent() {
     </div>
   )
 }
+
+const getImageStorageKey = (storyId: string, storyText: string) =>
+  `storyMixer:image:${storyId}:${storyText}`
+
+const getStorySaveKey = (storyId: string, storyText: string) =>
+  `storyMixer:saved:${storyId}:${storyText}`

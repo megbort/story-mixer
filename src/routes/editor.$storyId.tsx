@@ -78,7 +78,6 @@ function EditorComponent() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     if (validateForm()) {
-      console.log('Form values:', formValues)
       navigate({
         to: '/results',
         search: { storyId, formValues, isNewStory: true },
