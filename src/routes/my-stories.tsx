@@ -21,7 +21,7 @@ function RouteComponent() {
   const [stories, setStories] = useState<SavedStory[]>([])
 
   useEffect(() => {
-    const saved = sessionStorage.getItem('storyMixer:createdStories')
+    const saved = localStorage.getItem('storyMixer:createdStories')
     if (saved) {
       setStories(JSON.parse(saved))
     }
@@ -29,21 +29,18 @@ function RouteComponent() {
 
   const handleDeleteStory = (storyId: string) => {
     setStories((prev) => prev.filter((story) => story.id !== storyId))
-    const saved = sessionStorage.getItem('storyMixer:createdStories')
+    const saved = localStorage.getItem('storyMixer:createdStories')
     if (saved) {
       const updated = JSON.parse(saved).filter(
         (story: SavedStory) => story.id !== storyId,
       )
-      sessionStorage.setItem(
-        'storyMixer:createdStories',
-        JSON.stringify(updated),
-      )
+      localStorage.setItem('storyMixer:createdStories', JSON.stringify(updated))
     }
   }
 
   const handleDeleteAll = () => {
     setStories([])
-    sessionStorage.removeItem('storyMixer:createdStories')
+    localStorage.removeItem('storyMixer:createdStories')
   }
 
   const handleViewStory = (story: SavedStory) => {
@@ -93,7 +90,7 @@ function RouteComponent() {
                   className="p-4 border border-storymixer-grey rounded-lg flex items-center justify-between"
                 >
                   <div className="flex-1">
-                    <h3 className="font-semibold text-lg mb-1 text-storymixer-black">
+                    <h3 className="font-semibold text-lg mb-1 text-foreground">
                       {story.title}
                     </h3>
                     <p className="text-storymixer-grey-alt text-sm line-clamp-2 mb-2">

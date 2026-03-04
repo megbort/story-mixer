@@ -46,13 +46,13 @@ function ResultsComponent() {
     if (!isNewStory || !story || hasSaved.current) return
 
     const storySaveKey = getStorySaveKey(storyId, storyText)
-    if (sessionStorage.getItem(storySaveKey)) {
+    if (localStorage.getItem(storySaveKey)) {
       hasSaved.current = true
       return
     }
 
     const createdStories = JSON.parse(
-      sessionStorage.getItem('storyMixer:createdStories') || '[]',
+      localStorage.getItem('storyMixer:createdStories') || '[]',
     )
 
     if (
@@ -61,7 +61,7 @@ function ResultsComponent() {
           existing.storyId === storyId && existing.storyText === storyText,
       )
     ) {
-      sessionStorage.setItem(storySaveKey, 'deduped')
+      localStorage.setItem(storySaveKey, 'deduped')
       hasSaved.current = true
       return
     }
@@ -76,11 +76,11 @@ function ResultsComponent() {
     }
 
     createdStories.push(newStory)
-    sessionStorage.setItem(
+    localStorage.setItem(
       'storyMixer:createdStories',
       JSON.stringify(createdStories),
     )
-    sessionStorage.setItem(storySaveKey, newStory.id)
+    localStorage.setItem(storySaveKey, newStory.id)
     hasSaved.current = true
   }
 
@@ -246,7 +246,7 @@ function ResultsComponent() {
               <p className="font-semibold text-storymixer-grey mb-1">
                 {input.label}
               </p>
-              <p className="text-storymixer-black text-sm">
+              <p className="text-storymixer-foreground text-sm">
                 {formValues[input.id]}
               </p>
             </div>

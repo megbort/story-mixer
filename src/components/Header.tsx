@@ -1,11 +1,27 @@
 import { Link } from '@tanstack/react-router'
 
-import { useState, useEffect, useRef } from 'react'
-import { BookOpen, Home, Menu, X } from 'lucide-react'
-import { Button } from './ui'
+import { useEffect, useRef, useState } from 'react'
+import { BookOpen, Home, Menu, Moon, Sun, X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (globalThis.window === undefined) {
+      return false
+    }
+
+    const savedTheme = globalThis.localStorage.getItem('theme')
+    if (savedTheme === 'dark') {
+      return true
+    }
+
+    if (savedTheme === 'light') {
+      return false
+    }
+
+    return globalThis.matchMedia('(prefers-color-scheme: dark)').matches
+  })
   const sidebarRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -25,6 +41,30 @@ export default function Header() {
       }
     }
   }, [isOpen])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode)
+    globalThis.localStorage.setItem('theme', isDarkMode ? 'dark' : 'light')
+  }, [isDarkMode])
+
+  useEffect(() => {
+    if (globalThis.window === undefined) {
+      return
+    }
+
+    const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
+    const handleChange = (event: MediaQueryListEvent) => {
+      const savedTheme = globalThis.localStorage.getItem('theme')
+      if (savedTheme === 'dark' || savedTheme === 'light') {
+        return
+      }
+
+      setIsDarkMode(event.matches)
+    }
+
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
 
   return (
     <>
@@ -47,6 +87,21 @@ export default function Header() {
             <span>StoryMixer</span>
           </Link>
         </h1>
+        <Button
+          onClick={() => setIsDarkMode((currentMode) => !currentMode)}
+          variant="ghost"
+          size="icon"
+          className="ml-auto text-storymixer-white"
+          aria-label={
+            isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
+          }
+        >
+          {isDarkMode ? (
+            <Sun className="size-6" />
+          ) : (
+            <Moon className="size-6" />
+          )}
+        </Button>
       </header>
 
       <aside
