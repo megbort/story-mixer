@@ -14,7 +14,8 @@ import {
 
 const SUGGESTIONS: Record<string, string[]> = {
   noun: ['dog', 'elephant', 'banana', 'telescope', 'pizza'],
-  verb: ['jumped', 'danced', 'exploded', 'whispered', 'flew'],
+  verbPast: ['jumped', 'danced', 'exploded', 'whispered', 'flew'],
+  verbPresent: ['jump', 'dance', 'explode', 'whisper', 'fly'],
   adjective: ['sparkly', 'grumpy', 'invisible', 'gigantic', 'fuzzy'],
   adverb: [
     'quickly',
@@ -28,10 +29,25 @@ const SUGGESTIONS: Record<string, string[]> = {
 
 const DESCRIPTIONS: Record<string, string> = {
   noun: 'A person, place, or thing',
-  verb: 'An action or state of being',
+  verbPast: 'An action that already happened',
+  verbPresent: 'An action word in present/base form',
   adjective: 'A word that describes something',
   adverb: 'A word that describes how something is done',
   exclamation: 'An expression of strong emotion or surprise',
+}
+
+const TYPE_LABELS: Record<string, string> = {
+  noun: 'Noun',
+  verbPast: 'Verb (past tense)',
+  verbPresent: 'Verb (present tense)',
+  adjective: 'Adjective',
+  adverb: 'Adverb',
+  exclamation: 'Exclamation',
+}
+
+const formatExamples = (type: string) => {
+  const examples = SUGGESTIONS[type] ?? []
+  return type === 'exclamation' ? examples.join(' ') : examples.join(', ')
 }
 
 export const Route = createFileRoute('/editor/$storyId')({
@@ -112,12 +128,11 @@ function EditorComponent() {
                     <TooltipContent>
                       <div className="space-y-1">
                         <p className="font-semibold">
-                          {input.type.charAt(0).toUpperCase() +
-                            input.type.slice(1)}
+                          {TYPE_LABELS[input.type]}
                         </p>
                         <p className="text-xs">{DESCRIPTIONS[input.type]}</p>
                         <p className="text-xs">
-                          Examples: {SUGGESTIONS[input.type].join(', ')}
+                          Examples: {formatExamples(input.type)}
                         </p>
                       </div>
                     </TooltipContent>
@@ -127,12 +142,12 @@ function EditorComponent() {
               <Input
                 id={input.id}
                 type="text"
-                placeholder={`ex: ${SUGGESTIONS[input.type]?.join(', ')}`}
+                placeholder={`${formatExamples(input.type)}`}
                 value={formValues[input.id]}
                 onChange={(event) =>
                   handleInputChange(input.id, event.target.value)
                 }
-                className={errors[input.id] ? 'border-storymixer-error' : ''}
+                className={`truncate ${errors[input.id] ? 'border-storymixer-error' : ''}`}
               />
               {errors[input.id] && (
                 <p className="text-storymixer-error text-sm">

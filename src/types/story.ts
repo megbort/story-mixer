@@ -9,7 +9,14 @@ export interface Story {
 export interface StoryInput {
   id: string
   label: string
-  type: 'noun' | 'verb' | 'adjective' | 'adverb' | 'exclamation' | 'custom'
+  type:
+    | 'noun'
+    | 'verbPast'
+    | 'verbPresent'
+    | 'adjective'
+    | 'adverb'
+    | 'exclamation'
+    | 'custom'
   placeholder?: string
 }
 

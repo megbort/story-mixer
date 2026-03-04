@@ -6,6 +6,12 @@ import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { ArrowLeft, BookOpen } from 'lucide-react'
 
+const getImageStorageKey = (storyId: string, storyText: string) =>
+  `storyMixer:image:${storyId}:${storyText}`
+
+const getStorySaveKey = (storyId: string, storyText: string) =>
+  `storyMixer:saved:${storyId}:${storyText}`
+
 export const Route = createFileRoute('/results')({
   validateSearch: (search) => ({
     storyId: z.string().parse(search.storyId),
@@ -223,9 +229,9 @@ function ResultsComponent() {
       </div>
       <h2 className="text-lg font-semibold mb-4">{story.title}</h2>
 
-      <div className="flex gap-4">
-        <p className="text-lg basis-2/3">{storyText}</p>
-        <div className="border border-storymixer-grey rounded p-4 basis-1/3 shrink-0">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+        <p className="text-base sm:text-lg md:basis-2/3">{storyText}</p>
+        <div className="border border-storymixer-grey rounded p-4 md:basis-1/3 md:shrink-0 w-full md:w-auto max-w-md md:max-w-none mx-auto md:mx-0">
           {renderImageContent()}
         </div>
       </div>
@@ -250,9 +256,3 @@ function ResultsComponent() {
     </div>
   )
 }
-
-const getImageStorageKey = (storyId: string, storyText: string) =>
-  `storyMixer:image:${storyId}:${storyText}`
-
-const getStorySaveKey = (storyId: string, storyText: string) =>
-  `storyMixer:saved:${storyId}:${storyText}`

@@ -9,10 +9,10 @@ export const STORIES: Story[] = [
     inputs: [
       { id: 'adjective1', label: 'Adjective', type: 'adjective' },
       { id: 'noun1', label: 'Animal (noun)', type: 'noun' },
-      { id: 'verb1', label: 'Verb (past tense)', type: 'verb' },
+      { id: 'verb1', label: 'Verb (past tense)', type: 'verbPast' },
       { id: 'adjective2', label: 'Adjective', type: 'adjective' },
       { id: 'noun2', label: 'Noun', type: 'noun' },
-      { id: 'verb2', label: 'Verb', type: 'verb' },
+      { id: 'verb2', label: 'Verb (present tense)', type: 'verbPresent' },
       { id: 'adverb', label: 'Adverb', type: 'adverb' },
       { id: 'exclamation', label: 'Exclamation', type: 'exclamation' },
     ],
@@ -56,11 +56,11 @@ export const STORIES: Story[] = [
       'https://res.cloudinary.com/dm1yyjg7i/image/upload/v1770774226/storymixer/placeholder-02_dumjgc.jpg',
     inputs: [
       { id: 'noun1', label: 'Noun', type: 'noun' },
-      { id: 'verb1', label: 'Verb (past tense)', type: 'verb' },
+      { id: 'verb1', label: 'Verb (past tense)', type: 'verbPast' },
       { id: 'adjective1', label: 'Adjective', type: 'adjective' },
       { id: 'adjective2', label: 'Adjective', type: 'adjective' },
       { id: 'noun2', label: 'Noun', type: 'noun' },
-      { id: 'verb2', label: 'Verb', type: 'verb' },
+      { id: 'verb2', label: 'Verb (present tense)', type: 'verbPresent' },
       { id: 'exclamation', label: 'Exclamation', type: 'exclamation' },
     ],
     template: [
@@ -99,10 +99,10 @@ export const STORIES: Story[] = [
     inputs: [
       { id: 'adjective1', label: 'Adjective', type: 'adjective' },
       { id: 'noun1', label: 'Noun', type: 'noun' },
-      { id: 'verb1', label: 'Verb (past tense)', type: 'verb' },
+      { id: 'verb1', label: 'Verb (past tense)', type: 'verbPast' },
       { id: 'noun2', label: 'Noun', type: 'noun' },
       { id: 'adjective2', label: 'Adjective', type: 'adjective' },
-      { id: 'verb2', label: 'Verb', type: 'verb' },
+      { id: 'verb2', label: 'Verb (present tense)', type: 'verbPresent' },
       { id: 'exclamation', label: 'Exclamation', type: 'exclamation' },
     ],
     template: [
@@ -137,7 +137,7 @@ export const STORIES: Story[] = [
     inputs: [
       { id: 'noun1', label: 'Noun', type: 'noun' },
       { id: 'adjective1', label: 'Adjective', type: 'adjective' },
-      { id: 'verb1', label: 'Verb (past tense)', type: 'verb' },
+      { id: 'verb1', label: 'Verb (past tense)', type: 'verbPast' },
       { id: 'adverb', label: 'Adverb', type: 'adverb' },
       { id: 'noun2', label: 'Noun', type: 'noun' },
       { id: 'adjective2', label: 'Adjective', type: 'adjective' },
@@ -173,7 +173,7 @@ export const STORIES: Story[] = [
       'https://res.cloudinary.com/dm1yyjg7i/image/upload/v1770774224/storymixer/placeholder-05_mmzpkr.jpg',
     inputs: [
       { id: 'noun1', label: 'Noun', type: 'noun' },
-      { id: 'verb1', label: 'Verb (past tense)', type: 'verb' },
+      { id: 'verb1', label: 'Verb (past tense)', type: 'verbPast' },
       { id: 'adjective1', label: 'Adjective', type: 'adjective' },
       { id: 'exclamation', label: 'Exclamation', type: 'exclamation' },
     ],
@@ -200,10 +200,10 @@ export const STORIES: Story[] = [
     inputs: [
       { id: 'adjective1', label: 'Adjective', type: 'adjective' },
       { id: 'noun1', label: 'Noun', type: 'noun' },
-      { id: 'verb1', label: 'Verb (past tense)', type: 'verb' },
+      { id: 'verb1', label: 'Verb (past tense)', type: 'verbPast' },
       { id: 'adverb', label: 'Adverb', type: 'adverb' },
       { id: 'noun2', label: 'Noun', type: 'noun' },
-      { id: 'verb2', label: 'Verb', type: 'verb' },
+      { id: 'verb2', label: 'Verb (present tense)', type: 'verbPresent' },
       { id: 'exclamation', label: 'Exclamation', type: 'exclamation' },
     ],
     template: [
