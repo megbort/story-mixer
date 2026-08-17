@@ -8,7 +8,7 @@ export const Route = createFileRoute('/')({
     const navigate = useNavigate()
 
     return (
-      <div className="pt-8">
+      <div className="pt-6">
         <div className="mb-12">
           <h1 className="text-4xl font-bold mb-4">Welcome to StoryMixer!</h1>
           <p className="text-lg">

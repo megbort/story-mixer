@@ -8,6 +8,11 @@ import viteTsConfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
 import { nitro } from 'nitro/vite'
 
+const appVersion = {
+  build: process.env.APP_BUILD_NUMBER ?? 'dev',
+  sha: process.env.APP_SHA ?? 'local',
+}
+
 const isStorybook = process.argv.some((arg) => arg.includes('storybook'))
 const devtoolsPlugin = devtools({
   eventBusConfig: {
@@ -17,6 +22,9 @@ const devtoolsPlugin = devtools({
 })
 
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(appVersion),
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

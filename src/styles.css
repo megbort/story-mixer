@@ -6,13 +6,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
-html,
 body {
-  @apply h-full overflow-hidden;
-}
-
-body {
-  @apply m-0 bg-background text-foreground;
+  @apply min-h-screen flex flex-col m-0 bg-background text-foreground;
   font-family: 'Capriola', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

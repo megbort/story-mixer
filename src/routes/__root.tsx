@@ -8,6 +8,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import { PageWrapper } from '../components/PageWrapper'
 import { Button } from '@/components/ui/button'
 
@@ -42,6 +43,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
       <body>
         <Header />
         <PageWrapper>{children}</PageWrapper>
+        <Footer />
         <TanStackDevtools
           config={{
             position: 'bottom-right',
